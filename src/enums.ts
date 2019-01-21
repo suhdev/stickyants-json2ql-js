@@ -77,3 +77,10 @@ export enum JoinType {
     InnerJoin = 4,
     OuterJoin = 8,
 }
+
+export enum SqlStatementType {
+    Select = 1 << 0, 
+    Insert = 1 << 1, 
+    Update = 1 << 2, 
+    Delete = 1 << 3,
+}

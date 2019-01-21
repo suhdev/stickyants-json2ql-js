@@ -112,6 +112,14 @@ export class SqlQueryModel {
     return this;
   }
 
+  joinWith(joinTable:string, cb:(model:SqlJoin) => void) {
+    const m = new SqlJoin();
+    m.toTable(joinTable);
+    cb(m);
+    this.$joins.push(m);
+    return this;
+  }
+
   operator(op:SqlOperator) {
     this.$operator = op;
     return this;

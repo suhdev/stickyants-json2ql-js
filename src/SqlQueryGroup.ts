@@ -116,6 +116,10 @@ export class SqlQueryGroup {
     };
   }
 
+  toJSON(){
+    return this.toSqlRefiner(); 
+  }
+
   build() {
     return this.builder.addRefiner({
       type:SqlRefinerType.Grouping,
