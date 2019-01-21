@@ -163,9 +163,9 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a greater than condition i.e. 
+   * Specifies that this condition is a greater than condition i.e.
    * sets the operator to `>` and the right-hand side to the provided value
-   * @param val the value to use as the right-hand side value 
+   * @param val the value to use as the right-hand side value
    */
   greaterThan(val:number|string) {
     this.$operator = SqlOperator.GT;
@@ -174,9 +174,9 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a greater than or equal condition i.e. 
+   * Specifies that this condition is a greater than or equal condition i.e.
    * sets the operator to `>=` and the right-hand side to the provided value
-   * @param val the value to use as the right-hand side value 
+   * @param val the value to use as the right-hand side value
    */
   greaterThanOrEqual(val:number|string) {
     this.$operator = SqlOperator.GE;
@@ -185,9 +185,9 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a less than condition i.e. 
+   * Specifies that this condition is a less than condition i.e.
    * sets the operator to `<` and the right-hand side to the provided value
-   * @param val the value to use as the right-hand side value 
+   * @param val the value to use as the right-hand side value
    */
   lessThan(val:any) {
     this.$operator = SqlOperator.LT;
@@ -196,9 +196,9 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a less than or equal condition i.e. 
+   * Specifies that this condition is a less than or equal condition i.e.
    * sets the operator to `<=` and the right-hand side to the provided value
-   * @param val the value to use as the right-hand side value 
+   * @param val the value to use as the right-hand side value
    */
   lessThanOrEqual(val:any) {
     this.$operator = SqlOperator.LE;
@@ -207,10 +207,10 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a between condition i.e. 
+   * Specifies that this condition is a between condition i.e.
    * sets the operator to `BETWEEN` and the right-hand side to the provided range
-   * @param from the value to use as the start of the range 
-   * @param to the value to use as the end of the range 
+   * @param from the value to use as the start of the range
+   * @param to the value to use as the end of the range
    */
   between<T extends string|number>(from:T, to:T) {
     this.$operator = SqlOperator.BETWEEN;
@@ -219,10 +219,10 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a `NOT LIKE` condition i.e. 
+   * Specifies that this condition is a `NOT LIKE` condition i.e.
    * sets the operator to `NOT_LIKE` and the right-hand side to the provided value
    * i.e. `%{val}%`
-   * @param val the value to use as the right-hand side. 
+   * @param val the value to use as the right-hand side.
    */
   notLike(val:string) {
     this.$operator = SqlOperator.NOT_LIKE;
@@ -231,11 +231,11 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a `NOT BETWEEN` condition i.e. 
+   * Specifies that this condition is a `NOT BETWEEN` condition i.e.
    * sets the operator to `NOT_BETWEEN` and the right-hand side to the provided range
    * i.e. `%{val}%`
-   * @param from the value to use as the start of the range 
-   * @param to the value to use as the end of the range 
+   * @param from the value to use as the start of the range
+   * @param to the value to use as the end of the range
    */
   notBetween(from:any, to:any) {
     this.$operator = SqlOperator.NOT_BETWEEN;
@@ -244,8 +244,8 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a `IS NULL` condition i.e. 
-   * sets the operator to `IS_NULL` 
+   * Specifies that this condition is a `IS NULL` condition i.e.
+   * sets the operator to `IS_NULL`
    */
   get isNull() {
     this.$operator = SqlOperator.IS_NULL,
@@ -254,8 +254,8 @@ export class SqlCondition {
   }
 
   /**
-   * Specifies that this condition is a `IS NOT NULL` condition i.e. 
-   * sets the operator to `IS_NOT_NULL` 
+   * Specifies that this condition is a `IS NOT NULL` condition i.e.
+   * sets the operator to `IS_NOT_NULL`
    */
   get isNotNull() {
     this.$operator = SqlOperator.IS_NOT_NULL,
@@ -284,7 +284,7 @@ export class SqlCondition {
 
   /**
    * Sets the type of the condition to the provided value
-   * @param type the condition type 
+   * @param type the condition type
    */
   type(type:SqlRefinerType) {
     this.$type = type;
@@ -293,7 +293,7 @@ export class SqlCondition {
 
   /**
    * Sets the operator of the condition to the provided value
-   * @param type the condition operator 
+   * @param type the condition operator
    */
   operator(op:SqlOperator) {
     this.$operator = op;
