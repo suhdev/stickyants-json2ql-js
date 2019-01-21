@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.4"
+  },
+  "name": "json2ql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/suhdev/stickyants-json2ql-js.git",
+  "author": "Suhail Abood <suhail.abood@gmail.com>",
+  "license": "MIT"
+}
