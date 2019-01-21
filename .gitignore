@@ -1,3 +1,4 @@
 .DS_Store
 .thumbsdb
 /node_modules
+/coverage

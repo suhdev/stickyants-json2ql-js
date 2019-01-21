@@ -116,8 +116,8 @@ export class SqlQueryGroup {
     };
   }
 
-  toJSON(){
-    return this.toSqlRefiner(); 
+  toJSON() {
+    return this.toSqlRefiner();
   }
 
   build() {

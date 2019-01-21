@@ -79,8 +79,8 @@ export enum JoinType {
 }
 
 export enum SqlStatementType {
-    Select = 1 << 0, 
-    Insert = 1 << 1, 
-    Update = 1 << 2, 
+    Select = 1 << 0,
+    Insert = 1 << 1,
+    Update = 1 << 2,
     Delete = 1 << 3,
 }

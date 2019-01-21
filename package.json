@@ -9,7 +9,7 @@
     "typescript": "^3.2.4"
   },
   "scripts": {
-    "test": "jest __tests__",
+    "test": "jest __tests__ --coverage",
     "pretest": "tslint --project tslint.json --fix"
   },
   "husky": {

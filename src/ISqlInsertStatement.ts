@@ -1,6 +1,6 @@
-import { Dictionary } from "./types";
+import { Dictionary } from './types';
 
 export interface ISqlInsertStatement {
-    table:string;
-    value:Dictionary<any>[]; 
+  table:string;
+  value:Dictionary<any>[];
 }
