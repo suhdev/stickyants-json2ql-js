@@ -65,4 +65,25 @@ describe('Testing SqlQueryModel', () => {
     expect(result.key).toMatch(/^SomeKey.*/);
     expect(result.refiners.length).toEqual(0);
   });
+
+  it('should set count and skip to given values', () => {
+    const tableName = 'Documents';
+    const alias = 'Doc';
+    const m = new SqlQueryModel()
+      .table(tableName)
+      .as(alias)
+      .skip(25)
+      .count(25);
+    const result = m.build();
+
+    expect(result.table).toEqual(tableName);
+    expect(result.as).toEqual(alias);
+    expect(result.refiners.length).toEqual(0);
+    expect(result.joins.length).toEqual(0);
+    expect(result.with.length).toEqual(0);
+    expect(result.skip).toEqual(25);
+    expect(result.count).toEqual(25);
+  });
+
+ 
 });
