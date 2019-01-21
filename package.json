@@ -9,6 +9,7 @@
     "typescript": "^3.2.4"
   },
   "scripts": {
+    "prepublish": "npm test",
     "test": "jest __tests__ --coverage",
     "pretest": "tslint --project tslint.json --fix"
   },
