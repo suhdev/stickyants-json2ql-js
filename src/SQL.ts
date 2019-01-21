@@ -1,0 +1,45 @@
+import { SqlCondition } from './SqlCondition';
+import { SqlOperator } from './enums';
+import { SqlQueryGroup } from './SqlQueryGroup';
+import { SqlIFCondition } from './types';
+import { ISqlRefinable } from './ISqlRefinable';
+import { SqlQueryModel, SqlSort } from './SqlQueryModel';
+
+/**
+ *
+ */
+export const SQL = {
+  refiner(key:string) {
+    return new SqlCondition(null, key);
+  },
+  group(op:SqlOperator) {
+    return new SqlQueryGroup(null, null, op);
+  },
+
+  if(condition:SqlIFCondition, truthy:ISqlRefinable|undefined, falsy?:ISqlRefinable|undefined) {
+    let val:any = condition;
+    if (typeof condition === 'function') {
+      val = condition();
+    }
+    if (val) {
+      return truthy;
+    }
+    return falsy;
+  },
+  and(...args:ISqlRefinable[]) {
+    const g = new SqlQueryGroup(null, null, SqlOperator.AND);
+    g.filter(...args);
+    return g;
+  },
+  or(...args:ISqlRefinable[]) {
+    const g = new SqlQueryGroup(null, null, SqlOperator.OR);
+    g.filter(...args);
+    return g;
+  },
+  relation(key:string) {
+    return new SqlQueryModel(null, key);
+  },
+  sortBy(key:string) {
+    return new SqlSort(null, key);
+  },
+};

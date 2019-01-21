@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./lib", 
+        "module": "commonjs",
+        "declaration": true,
+        "target": "es5"
+    },
+    "exclude": [
+        "node_modules",
+        "__tests__"
+    ]
+}
