@@ -17,7 +17,7 @@
   },
   "name": "json2ql",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": "https://github.com/suhdev/stickyants-json2ql-js.git",
   "author": "Suhail Abood <suhail.abood@gmail.com>",
   "license": "MIT"
