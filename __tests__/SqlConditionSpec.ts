@@ -260,6 +260,12 @@ describe('Testing SqlCondition', () => {
     expect(result.value).toEqual(value);
     expect(result.type).toEqual(SqlRefinerType.Selection);
     expect(result.operator).toEqual(SqlOperator.IN);
+    expect(() => cond.isIn([]))
+      .toThrow('Expected an array with at least one values but got empty array');
+    expect(() => cond.isIn(undefined))
+      .toThrow('Expected an array of values but got undefined');
+    expect(() => cond.isIn(null))
+      .toThrow('Expected an array of values but got null');
   });
 
   it('Should set operator to greater than or equal', () => {
