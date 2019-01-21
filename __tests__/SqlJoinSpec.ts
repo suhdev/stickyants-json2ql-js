@@ -66,4 +66,20 @@ describe('Testing SqlJoin', () => {
     expect(join.to).toEqual('Users');
     expect(join.on.length).toEqual(1);
   });
+
+  it('should set join type to given type', () => {
+    const join = new SqlJoin()
+            .type(JoinType.RightJoin)
+            .toTable('Users')
+            .on(new SqlCondition(null, 'Email')
+                .magicParams
+                .equalTo('OtherTable.Email'))
+            .alias('Authors')
+            .toJSON();
+
+    expect(join.type).toEqual(JoinType.RightJoin);
+    expect(join.alias).toEqual('Authors');
+    expect(join.to).toEqual('Users');
+    expect(join.on.length).toEqual(1);
+  });
 });
