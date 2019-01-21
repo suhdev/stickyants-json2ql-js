@@ -3,7 +3,8 @@ import { SqlOperator } from './enums';
 import { SqlQueryGroup } from './SqlQueryGroup';
 import { SqlIFCondition } from './types';
 import { ISqlRefinable } from './ISqlRefinable';
-import { SqlQueryModel, SqlSort } from './SqlQueryModel';
+import { SqlQueryModel } from './SqlQueryModel';
+import { SqlSort } from './SqlSort';
 
 /**
  *
