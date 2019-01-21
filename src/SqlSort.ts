@@ -23,9 +23,8 @@ export class SqlSort {
     return this;
   }
 
-
   /**
-   * Sets the sort direction to be descending 
+   * Sets the sort direction to be descending
    */
   get desc() {
     this.$direction = SqlSorterDirection.DESC;
@@ -42,17 +41,17 @@ export class SqlSort {
   }
 
   /**
-   * Sets the context model 
+   * Sets the context model
    * @param ctx the context to use the sort on
    */
-  context(ctx:SqlQueryModel){
-    this.$context = ctx; 
-    return this; 
+  context(ctx:SqlQueryModel) {
+    this.$context = ctx;
+    return this;
   }
 
   /**
-   * Adds the sort option to the context model 
-   * and return the context 
+   * Adds the sort option to the context model
+   * and return the context
    */
   add() {
     this.$context.addSort({

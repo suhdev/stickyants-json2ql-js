@@ -84,3 +84,8 @@ export enum SqlStatementType {
     Update = 1 << 2,
     Delete = 1 << 3,
 }
+
+export enum SqlModifier {
+    Distinct = 1 << 0,
+
+}

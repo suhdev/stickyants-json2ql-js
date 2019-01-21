@@ -1,6 +1,5 @@
 import { SqlCondition } from './SqlCondition';
 import { SqlOperator } from './enums';
-import { SqlQueryGroup } from './SqlQueryGroup';
 import { SqlIFCondition } from './types';
 import { ISqlRefinable } from './ISqlRefinable';
 import { SqlQueryModel } from './SqlQueryModel';
@@ -14,7 +13,7 @@ export const SQL = {
     return new SqlCondition(null, key);
   },
   group(op:SqlOperator) {
-    return new SqlQueryGroup(null, null, op);
+    return new SqlQueryModel(op, null, null).asGrouping;
   },
 
   if(condition:SqlIFCondition, truthy:ISqlRefinable|undefined, falsy?:ISqlRefinable|undefined) {
@@ -28,17 +27,18 @@ export const SQL = {
     return falsy;
   },
   and(...args:ISqlRefinable[]) {
-    const g = new SqlQueryGroup(null, null, SqlOperator.AND);
-    g.filter(...args);
-    return g;
+    return new SqlQueryModel(SqlOperator.AND, null, null)
+      .asGrouping
+      .filter(...args);
   },
   or(...args:ISqlRefinable[]) {
-    const g = new SqlQueryGroup(null, null, SqlOperator.OR);
-    g.filter(...args);
+    const g = new SqlQueryModel(SqlOperator.OR, null, null)
+      .asGrouping
+      .filter(...args);
     return g;
   },
   relation(key:string) {
-    return new SqlQueryModel(null, key);
+    return new SqlQueryModel(SqlOperator.AND, null, key);
   },
   sortBy(key:string) {
     return new SqlSort(null, key);

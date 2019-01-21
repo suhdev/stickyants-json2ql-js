@@ -1,6 +1,6 @@
 import { ISqlRefiner } from './ISqlRefiner';
-import { SqlOperator, SqlSorterDirection, SqlRefinerType, SqlQueryFlags } from './enums';
-import { SqlQueryGroup } from './SqlQueryGroup';
+import { SqlOperator, SqlSorterDirection,
+  SqlRefinerType, SqlQueryFlags, SqlModifier } from './enums';
 import { ISqlRefinable } from './ISqlRefinable';
 import { SqlCondition } from './SqlCondition';
 import { SqlSort } from './SqlSort';
@@ -12,6 +12,7 @@ export class SqlQueryModel {
   private $skip:number = 0;
   private $count:number = -1;
   private $isStats:boolean = false;
+  private $modifiers:SqlModifier = 0;
   private $isDistinct:boolean;
   private $operator:SqlOperator = SqlOperator.AND;
   private $refiners:ISqlRefiner[] = [];
@@ -21,13 +22,22 @@ export class SqlQueryModel {
   private $sorters:ISqlRefiner[] = [];
   private $selection:string[] = ['*'];
   private $tableIdentifier: string;
-  private $parent: SqlQueryModel | SqlQueryGroup;
+  private $parent: SqlQueryModel;
   private $key: string;
-  private $with: SqlQueryModel[];
+  private $with: SqlQueryModel[] = [];
+  private $type:SqlRefinerType;
 
-  constructor(parentModel?:SqlQueryModel|SqlQueryGroup, key?:string) {
+  constructor(op:SqlOperator = SqlOperator.AND,
+              parentModel?:SqlQueryModel, key?:string) {
     this.$parent = parentModel;
-    this.$key = key;
+    this.$type = SqlRefinerType.Grouping;
+    this.$operator = op;
+    this.$key = key || `SomeKey${Date.now()}`;
+  }
+
+  get asGrouping() {
+    this.$type = SqlRefinerType.Grouping;
+    return this;
   }
 
   filter(...args:ISqlRefinable[]) {
@@ -73,7 +83,7 @@ export class SqlQueryModel {
     return this;
   }
 
-  sort(key:string) {
+  orderBy(key:string) {
     return new SqlSort(this, key);
   }
 
@@ -89,6 +99,11 @@ export class SqlQueryModel {
 
   key(key:string) {
     this.$key = key;
+    return this;
+  }
+
+  modifier(mod:SqlModifier) {
+    this.$modifiers |= mod;
     return this;
   }
 
@@ -126,7 +141,7 @@ export class SqlQueryModel {
   }
 
   get distinct() {
-    this.$isDistinct = true;
+    this.$modifiers |= SqlModifier.Distinct;
     return this;
   }
 
@@ -160,25 +175,15 @@ export class SqlQueryModel {
   }
 
   group(op:SqlOperator) {
-    return new SqlQueryGroup(this, this, op);
+    return new SqlQueryModel(op, this, null);
   }
 
   andGroup() {
-    return new SqlQueryGroup(this, this, SqlOperator.AND);
+    return new SqlQueryModel(SqlOperator.AND, this, null);
   }
 
   orGroup() {
-    return new SqlQueryGroup(this, this, SqlOperator.OR);
-  }
-
-  orderBy(key:string, direction:SqlSorterDirection) {
-    this.$sorters.push({
-      key,
-      value:direction,
-      type:SqlRefinerType.Sort,
-      operator:SqlOperator.EQ,
-    });
-    return this;
+    return new SqlQueryModel(SqlOperator.OR, this, null);
   }
 
   refiner(key:string, value:any, operator:SqlOperator,
@@ -219,11 +224,11 @@ export class SqlQueryModel {
   }
 
   get relation() {
-    return new SqlQueryModel(this);
+    return new SqlQueryModel(SqlOperator.AND, this);
   }
 
   relationOn(key:string) {
-    return new SqlQueryModel(this, key);
+    return new SqlQueryModel(SqlOperator.AND, this, key);
   }
 
   end() {
@@ -252,7 +257,13 @@ export class SqlQueryModel {
   }
 
   toSqlRefiner() {
-    return {
+    return this.$type === SqlRefinerType.Grouping ? {
+      key:this.$key,
+      type:SqlRefinerType.Grouping,
+      refiners:this.$refiners,
+      value:null,
+      operator:this.$operator,
+    } :{
       key:this.$key,
       type:SqlRefinerType.Relation,
       value:null,
@@ -276,6 +287,10 @@ export class SqlQueryModel {
     };
   }
 
+  toJSON() {
+    return this.build();
+  }
+
   build() {
     return {
       with:this.$with,
@@ -289,7 +304,7 @@ export class SqlQueryModel {
       tableIdentifier:this.$tableIdentifier,
       count:this.$count,
       skip:this.$skip,
-      isDistinct:this.$isDistinct,
+      modifiers:this.$modifiers,
       refinersOperator:this.$operator,
       selection:this.$selection,
       isStats:this.$isStats,

@@ -1,6 +1,5 @@
 import { SqlRefinerType, SqlQueryFlags, SqlOperator } from './enums';
 import { SqlQueryModel } from './SqlQueryModel';
-import { SqlQueryGroup } from './SqlQueryGroup';
 
 /**
  * Represents a SQL condition
@@ -11,7 +10,7 @@ export class SqlCondition {
   private $type:SqlRefinerType;
   private $flags:SqlQueryFlags = 0;
   private $operator:SqlOperator;
-  private context: SqlQueryGroup | SqlQueryModel;
+  private context: SqlQueryModel;
   private $isNegated: boolean;
 
   /**
@@ -21,7 +20,7 @@ export class SqlCondition {
    * SQL queries
    * @param key the column name to refine by
    */
-  constructor(ctx:SqlQueryGroup | SqlQueryModel, key:string) {
+  constructor(ctx: SqlQueryModel, key:string) {
     this.context = ctx;
     this.$key = key;
     this.$isNegated = false;
