@@ -43,4 +43,19 @@ describe('Testing SqlSort', () => {
     expect(result.type).toEqual(SqlRefinerType.Sort);
     expect(result.value).toEqual(SqlSorterDirection.ASC);
   });
+
+  it('it should construct object from json', () => {
+    const field = 'FirstName';
+    const key = 'LastName';
+    const sort = SqlSort.fromJson({
+      key,
+      value:SqlSorterDirection.DESC,
+      operator:SqlOperator.EQ,
+      type:SqlRefinerType.Sort,
+    });
+    const result = sort.toJSON();
+    expect(result.key).toEqual(key);
+    expect(result.type).toEqual(SqlRefinerType.Sort);
+    expect(result.value).toEqual(SqlSorterDirection.ASC);
+  });
 });

@@ -1,6 +1,7 @@
 import { JoinType } from './enums';
 import { ISqlRefinable } from './ISqlRefinable';
 import { ISqlRefiner } from './ISqlRefiner';
+import { ISqlJoin } from './ISqlJoin';
 /**
  * Represents a join relationship
  */
@@ -46,10 +47,5 @@ export declare class SqlJoin {
      * @param args the join conditions
      */
     on(...args: ISqlRefinable[]): this;
-    toJSON(): {
-        type: JoinType;
-        on: ISqlRefiner[];
-        alias: string;
-        to: string;
-    };
+    toJSON(): ISqlJoin;
 }

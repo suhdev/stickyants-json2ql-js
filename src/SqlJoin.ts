@@ -1,6 +1,7 @@
 import { JoinType } from './enums';
 import { ISqlRefinable } from './ISqlRefinable';
 import { ISqlRefiner } from './ISqlRefiner';
+import { ISqlJoin } from './ISqlJoin';
 
 /**
  * Represents a join relationship
@@ -84,7 +85,7 @@ export class SqlJoin {
     return this;
   }
 
-  toJSON() {
+  toJSON():ISqlJoin {
     return {
       type:this.$type,
       on:this.$on,

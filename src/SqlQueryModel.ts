@@ -1,30 +1,31 @@
 import { ISqlRefiner } from './ISqlRefiner';
-import { SqlOperator, SqlSorterDirection,
+import { SqlOperator,
   SqlRefinerType, SqlQueryFlags, SqlModifier } from './enums';
 import { ISqlRefinable } from './ISqlRefinable';
 import { SqlCondition } from './SqlCondition';
 import { SqlSort } from './SqlSort';
 import { SqlJoin } from './SqlJoin';
+import { ISqlQuery } from './ISqlQuery';
+import { ISqlJoin } from './ISqlJoin';
 
 export class SqlQueryModel {
   private $table:string;
   private $as:string;
   private $skip:number = 0;
   private $count:number = -1;
-  private $isStats:boolean = false;
   private $modifiers:SqlModifier = 0;
   private $isDistinct:boolean;
   private $operator:SqlOperator = SqlOperator.AND;
   private $refiners:ISqlRefiner[] = [];
   private $having:ISqlRefiner[] = [];
-  private $joins:SqlJoin[] = [];
+  private $joins:ISqlJoin[] = [];
   private $groupBy:string[] = [];
   private $sorters:ISqlRefiner[] = [];
   private $selection:string[] = ['*'];
   private $tableIdentifier: string;
   private $parent: SqlQueryModel;
   private $key: string;
-  private $with: SqlQueryModel[] = [];
+  private $with: ISqlQuery[] = [];
   private $type:SqlRefinerType;
 
   constructor(op:SqlOperator = SqlOperator.AND,
@@ -67,10 +68,12 @@ export class SqlQueryModel {
 
   addSort(sort:ISqlRefiner) {
     this.$sorters.push(sort);
+    return this;
   }
 
   addSorters(sorters:ISqlRefiner[]) {
     this.$sorters.push(...sorters);
+    return this;
   }
 
   table(table:string) {
@@ -121,14 +124,14 @@ export class SqlQueryModel {
   }
 
   with(...args:SqlQueryModel[]) {
-    this.$with = args;
+    this.$with = args.map(e => e.build());
     return this;
   }
 
   join(cb:(model:SqlJoin) => void) {
     const m = new SqlJoin();
     cb(m);
-    this.$joins.push(m);
+    this.$joins.push(m.toJSON());
     return this;
   }
 
@@ -136,7 +139,7 @@ export class SqlQueryModel {
     const m = new SqlJoin();
     m.toTable(joinTable);
     cb(m);
-    this.$joins.push(m);
+    this.$joins.push(m.toJSON());
     return this;
   }
 
@@ -164,11 +167,6 @@ export class SqlQueryModel {
     return this;
   }
 
-  get stats() {
-    this.$isStats = true;
-    return this;
-  }
-
   count(count:number) {
     this.$count = count;
     return this;
@@ -177,10 +175,6 @@ export class SqlQueryModel {
   tableIdentifier(id:string) {
     this.$tableIdentifier = id;
     return this;
-  }
-
-  group(op:SqlOperator) {
-    return new SqlQueryModel(op, this, null);
   }
 
   andGroup() {
@@ -208,16 +202,16 @@ export class SqlQueryModel {
     return this;
   }
 
-  text(key:string, value:any, operator:SqlOperator, flags?:SqlQueryFlags) {
+  text(key:string, value:string, operator:SqlOperator, flags?:SqlQueryFlags) {
     return this.refiner(key, value, operator, SqlRefinerType.String, flags);
   }
 
-  number(key:string, value:any, operator:SqlOperator, flags?:SqlQueryFlags) {
+  number(key:string, value:number, operator:SqlOperator, flags?:SqlQueryFlags) {
     return this.refiner(key, value, operator, SqlRefinerType.Number);
   }
 
-  bool(key:string, value:any, operator:SqlOperator, flags?:SqlQueryFlags) {
-    return this.refiner(key, value, operator, SqlRefinerType.Boolean);
+  bool(key:string, value:boolean, flags?:SqlQueryFlags) {
+    return this.refiner(key, value, SqlOperator.EQ, SqlRefinerType.Boolean);
   }
 
   isIn(key:string, value:any, flags?:SqlQueryFlags) {
@@ -232,11 +226,7 @@ export class SqlQueryModel {
     return new SqlQueryModel(SqlOperator.AND, this);
   }
 
-  relationOn(key:string) {
-    return new SqlQueryModel(SqlOperator.AND, this, key);
-  }
-
-  end() {
+  end():SqlQueryModel|ISqlQuery {
     if (this.$parent) {
       return this.$parent.addRefiner({
         key:this.$key,
@@ -244,6 +234,9 @@ export class SqlQueryModel {
         value:null,
         operator:SqlOperator.IN,
         relation:{
+          joins:this.$joins,
+          having:this.$having,
+          groupBy:this.$groupBy,
           refiners:this.$refiners,
           sorters:this.$sorters,
           table:this.$table,
@@ -251,10 +244,9 @@ export class SqlQueryModel {
           tableIdentifier:this.$tableIdentifier,
           count:this.$count,
           skip:this.$skip,
-          isDistinct:this.$isDistinct,
+          modifiers:this.$modifiers,
           refinersOperator:this.$operator,
           selection:this.$selection,
-          isStats:this.$isStats,
         },
       });
     }
@@ -284,10 +276,9 @@ export class SqlQueryModel {
         tableIdentifier:this.$tableIdentifier,
         count:this.$count,
         skip:this.$skip,
-        isDistinct:this.$isDistinct,
+        modifiers:this.$modifiers,
         refinersOperator:this.$operator,
         selection:this.$selection,
-        isStats:this.$isStats,
       },
     };
   }
@@ -296,7 +287,7 @@ export class SqlQueryModel {
     return this.build();
   }
 
-  build() {
+  build():ISqlQuery {
     return {
       with:this.$with,
       joins:this.$joins,
@@ -312,7 +303,6 @@ export class SqlQueryModel {
       modifiers:this.$modifiers,
       refinersOperator:this.$operator,
       selection:this.$selection,
-      isStats:this.$isStats,
     };
   }
 }
