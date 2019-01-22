@@ -14,5 +14,5 @@ export declare const SQL: {
     and(...args: ISqlRefinable[]): SqlQueryModel;
     or(...args: ISqlRefinable[]): SqlQueryModel;
     relation(key: string): SqlQueryModel;
-    sortBy(key: string): SqlSort;
+    orderBy(key: string): SqlSort;
 };

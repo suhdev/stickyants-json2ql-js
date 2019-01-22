@@ -25,6 +25,7 @@ export declare class SqlQueryModel {
     private $with;
     private $type;
     constructor(op?: SqlOperator, parentModel?: SqlQueryModel, key?: string);
+    readonly asRelation: this;
     readonly asGrouping: this;
     filter(...args: ISqlRefinable[]): this;
     filterHaving(...args: ISqlRefinable[]): this;
