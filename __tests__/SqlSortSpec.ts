@@ -56,6 +56,6 @@ describe('Testing SqlSort', () => {
     const result = sort.toJSON();
     expect(result.key).toEqual(key);
     expect(result.type).toEqual(SqlRefinerType.Sort);
-    expect(result.value).toEqual(SqlSorterDirection.ASC);
+    expect(result.value).toEqual(SqlSorterDirection.DESC);
   });
 });
