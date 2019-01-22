@@ -38,9 +38,10 @@ export const SQL = {
     return g;
   },
   relation(key:string) {
-    return new SqlQueryModel(SqlOperator.AND, null, key);
+    return new SqlQueryModel(SqlOperator.AND, null, key)
+      .asRelation;
   },
-  sortBy(key:string) {
+  orderBy(key:string) {
     return new SqlSort(null, key);
   },
 };

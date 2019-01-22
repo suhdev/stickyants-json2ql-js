@@ -35,6 +35,11 @@ export class SqlQueryModel {
     this.$key = key || `SomeKey${Date.now()}`;
   }
 
+  get asRelation() {
+    this.$type = SqlRefinerType.Relation;
+    return this;
+  }
+
   get asGrouping() {
     this.$type = SqlRefinerType.Grouping;
     return this;
