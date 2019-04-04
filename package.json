@@ -13,7 +13,9 @@
     "test": "jest __tests__ --coverage",
     "pretest": "tslint --project tslint.json --fix"
   },
-  "engines" : { "node" : ">= 8.8.1" },
+  "engines": {
+    "node": ">= 8.8.1"
+  },
   "husky": {
     "pre-commit": "npm test"
   },
