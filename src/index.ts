@@ -1,12 +1,18 @@
-export {SqlGroupOperator,
-    SqlQueryFlags, SqlModifier,
+export {
+    SqlGroupOperator,
+    SqlQueryFlags,
+    SqlModifier,
     SqlOperator,
     SqlSorterDirection,
     SqlRefinerType,
-    SqlStatementType} from './enums';
+    JoinType,
+    SqlStatementType,
+} from './enums';
 
-export {SqlIFCondition,
-    KeyFilterFn} from './types';
+export {
+    SqlIFCondition,
+    KeyFilterFn,
+} from './types';
 
 export { ISqlQuery } from './ISqlQuery';
 

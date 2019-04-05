@@ -1,5 +1,5 @@
-export { SqlGroupOperator, SqlQueryFlags, SqlModifier, SqlOperator, SqlSorterDirection, SqlRefinerType, SqlStatementType } from './enums';
-export { SqlIFCondition, KeyFilterFn } from './types';
+export { SqlGroupOperator, SqlQueryFlags, SqlModifier, SqlOperator, SqlSorterDirection, SqlRefinerType, JoinType, SqlStatementType, } from './enums';
+export { SqlIFCondition, KeyFilterFn, } from './types';
 export { ISqlQuery } from './ISqlQuery';
 export { ISqlRefinable } from './ISqlRefinable';
 export { SqlCondition } from './SqlCondition';
